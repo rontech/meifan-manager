@@ -1,7 +1,9 @@
 @(message: String)
 
+@import models.portal.search.HotestKeyword
+
 @main("Welcome to Play") {
 
-    @play20.welcome(message)
+  @views.html.advertItem(HotestKeyword.findAll().toList) 
 
 }

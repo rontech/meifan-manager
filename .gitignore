@@ -1,10 +1,30 @@
+# ignore all dot files;
+.*
+
+# ignore all html temp files;
+*~
+
+# ignore all vim temp files;
+*.swp
+
+# except for .gitignore file;
+!.gitignore
+
+# ignore play! working directory;
+bin
+db
+eclipse
+lib
+log
 logs
 project/project
 project/target
 target
+test-result
 tmp
-.history
 dist
+*.iml
+
 /.idea
 /*.iml
 /out
@@ -13,3 +33,14 @@ dist
 /.project
 /RUNNING_PID
 /.settings
+
+
+
+# ignore auto backuped html files.
+*.bak
+
+# exclude directory under app
+!app/framework/db
+
+# exclude directory under test
+!test/framework/db/

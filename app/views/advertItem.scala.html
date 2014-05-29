@@ -1,0 +1,12 @@
+@(hotkeys: List[models.portal.search.HotestKeyword])
+
+<div>
+  <ul>
+    length = @hotkeys.length
+    @for(hkey <- hotkeys) {
+      <li>
+        @hkey.id   @hkey.atomicKeyword
+      </li>
+    }
+  </ul>
+</div>
