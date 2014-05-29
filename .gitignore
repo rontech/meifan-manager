@@ -24,7 +24,6 @@ test-result
 tmp
 dist
 *.iml
-
 /.idea
 /*.iml
 /out
