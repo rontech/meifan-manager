@@ -3,7 +3,16 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
+GET        /                                 controllers.Application.index
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET        /assets/*file                     controllers.Assets.at(path="/public", file)
+
+#get pictures
+GET        /getPhoto/:name                   controllers.Application.getPhoto(name: ObjectId)
+
+#manager about salon  apply
+GET        /allAppliedSalons/:page           controllers.MeifanSalonApplies.list(page: Int)
+GET        /MeifanSalonApy/agree             controllers.MeifanSalonApplies.agreeMeifanSalonApy(salonId: ObjectId, page: Int)
+GET        /MeifanSalonApy/reject            controllers.MeifanSalonApplies.rejectMeifanSalonApy(salonId: ObjectId, page: Int)
+GET        /MeifanSalonApy/showDetail        controllers.MeifanSalonApplies.getItemDetail(salonId: ObjectId, page: Int)

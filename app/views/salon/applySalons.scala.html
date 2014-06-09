@@ -1,0 +1,114 @@
+@(SalonAppliedForm: Form[ models.portal.manager.MeifanSalonApySearch],currentPage: models.portal.manager.Page[models.portal.manager.SalonApply])(implicit flash: play.api.mvc.Flash)
+@import models.portal.manager._
+    @****************************************
+    * Helper generating navigation links    *
+    ****************************************@
+  @link(page :Int)= {
+    routes.MeifanSalonApplies.list(page)
+  }
+
+    @**********************************
+    * Helper generating table headers *
+    ***********************************@
+  @*header(orderBy: Int, title: String) = {
+    <th class="col@orderBy header @if(scala.math.abs(currentOrderBy) == orderBy) @{if(currentOrderBy < 0) "headerSortDown" else "headerSortUp"}">
+      <a href="@link(0, Some(orderBy))">@title</a>
+    </th>
+  }*@
+
+  @main {
+
+    <h1>@Messages("meifanManger.salon.applied", currentPage.total)</h1>
+
+    @flash.get("success").map { message =>
+      <div class="alert-message warning">
+        <strong>Done!</strong> @message
+      </div>
+    }
+
+    @*<div id="actions">
+
+      @*helper.form(action=routes.Application.list()) {
+        <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Filter by computer name...">
+        <input type="submit" id="searchsubmit" value="Filter by name" class="btn primary">
+      }
+
+      <a class="btn success" id="add" href="#">Add a new computer</a>
+
+    </div>*@
+
+    @Option(currentPage.items).filterNot(_.isEmpty).map { salons =>
+
+    <table class="computers zebra-striped">
+      <thead>
+        <tr>
+          <th class="header">店铺ID</th>
+          <th class="header">店铺名</th>
+          <th class="header">店铺行业</th>
+          <th class="header">联系电话</th>
+          <th class="header">联系人</th>
+          <th class="header">邮箱</th>
+          <th class="header">平台注册日期</th>
+          <th class="header">完成事项</th>
+          <th class="header">操作</th>
+         </tr>
+      </thead>
+      <tbody>
+
+      @salons.map { salonApyItem =>
+          <tr>
+            <td>@salonApyItem.salon.salonAccount.accountId</td>
+            <td>@salonApyItem.salon.salonName</td>
+            <td>@salonApyItem.salon.salonIndustry.map{industry => @industry &nbsp;}</td>
+            <td>@salonApyItem.salon.contactMethod.mainPhone</td>
+            <td>@salonApyItem.salon.contactMethod.contact</td>
+            <td>@salonApyItem.salon.contactMethod.email</td>
+            <td>@salonApyItem.salon.registerDate.format("yyyy-MM-dd")</td>
+            <td>@salonApyItem.finishedItem.map{item => @item  &nbsp;}</td>
+            <td>
+              <a href="@routes.MeifanSalonApplies.agreeMeifanSalonApy(salonApyItem.salon.id, currentPage.page)"><span>同意</span><b></b></a>
+              <a href="@routes.MeifanSalonApplies.rejectMeifanSalonApy(salonApyItem.salon.id, currentPage.page)"><span>拒绝</span><b></b></a>
+              <a href="@routes.MeifanSalonApplies.getItemDetail(salonApyItem.salon.id, currentPage.page)"><span>查看</span><b></b></a>
+            </td>
+          </tr>
+
+      }
+
+      </tbody>
+    </table>
+
+    <div id="pagination" class="pagination">
+      <ul>
+        @currentPage.prev.map { page =>
+        <li class="prev">
+          <a href="@link(page)">&larr; 上一页</a>
+        </li>
+        }.getOrElse {
+          <li class="prev disabled">
+            <a>&larr; 上一页</a>
+          </li>
+        }
+      <li class="current">
+        <a>Displaying @(currentPage.offset + 1) to @(currentPage.offset + 10) of @currentPage.total</a>
+      </li>
+        @currentPage.next.map { page =>
+        <li class="next">
+          <a href="@link(page)">下一页 &rarr;</a>
+        </li>
+        }.getOrElse {
+          <li class="next disabled">
+            <a>下一页 &rarr;</a>
+          </li>
+        }
+      </ul>
+    </div>
+
+    }.getOrElse {
+
+      <div class="well">
+        <em>Nothing to display</em>
+      </div>
+    }
+
+
+}

@@ -1,0 +1,19 @@
+@(salon: models.portal.salon.Salon)
+
+@main {
+  <h4>@salon.salonName</h4>
+  <p>店铺营业执照</p>
+  @if(salon.salonPics.exists(a => a.picUse.equals("SalonCheck"))){
+    @salon.salonPics.map{p =>
+      @if(p.picUse.equals("SalonCheck")){
+        <div class="taC"><img src="@routes.Application.getPhoto(p.fileObjId)" class="bdImgGray"  width="205" height="150"/></div>
+        <p class="fgGray fs10 mT10 taC">@p.description</p>
+      }
+    }
+    <div><a class="btn success" id="add" href="#">同意</a></div>
+    <div><a class="btn success" id="add" href="#">拒绝</a></div>
+  }else{
+    该店铺还未上传营业执照
+  }
+
+}

@@ -1,0 +1,43 @@
+@(MeifanSalonForm: Form[AnyRef], itemType :String)
+@import helper._
+
+@itemType match{
+  @case "SALON_APPLY" => {
+    @helper.form(routes.MeifanSalonApplies.getByCondition){
+      @inputText(MeifanSalonForm("id"), '_label -> "店铺ID")
+      @inputText(MeifanSalonForm("salonName"), '_label -> "店铺名")
+      @select(
+        MeifanSalonForm("flag"),
+        options = options("Hairdressing"-> Messages("industry.industryName.Hairdressing"),
+          "0" -> "申请中",
+          "1" -> "已同意",
+          "2" -> "已拒绝"
+        ),
+        '_label -> "状态", '_default -> 0,
+        '_showConstraints -> false
+      )
+      @inputText(MeifanSalonForm("registerStarDate"), '_label -> "平台注册日期")
+      @inputText(MeifanSalonForm("registerEndDate"), '_label -> None)
+
+      @select(
+        MeifanSalonForm("flag"),
+        options = options("Hairdressing"-> Messages("industry.industryName.Hairdressing"),
+          "0" -> "申请中",
+          "1" -> "已同意",
+          "2" -> "已拒绝"
+        ),
+        '_label -> "状态", '_default -> 0,
+        '_showConstraints -> false
+      )
+    }
+  }
+
+  @case "SALON_MANAGER" => {
+
+  }
+
+  @case "SALON_PERMISSION" => {
+
+  }
+
+}

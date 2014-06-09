@@ -1,9 +1,5 @@
-@(message: String)
+@(messages: String)
 
-@import models.portal.search.HotestKeyword
-
-@main("Welcome to Play") {
-
-  @views.html.advertItem(HotestKeyword.findAll().toList) 
-
+@main {
+ <h2>ok</h2>
 }
