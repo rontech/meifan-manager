@@ -8,20 +8,28 @@ import views._
 import models.portal.salon._
 import models.portal.manager._
 import play.api.data.Forms._
-import models.portal.manager.Page
-import models.portal.manager.MeifanSalonApySearch
 
 
 /**
- * Created by HZ-HAN on 14/06/09.
+ * Created by PINGDOU on 14/06/09.
  */
 object MeifanSalonApplies extends Controller {
+  //a constant for page size
   val pageSize :Int = 10
 
-  val SalonAppliedForm :Form[MeifanSalonApySearch] = Form(mapping(
-    "id" -> txt,
-    "salonName" -> txt,
-    "industry" -> txt,
+  /**
+   * The play form for search salon which has applied
+   * @param id salon objectId or salon accountId
+   * @param salonName salon's name
+   * @param industry
+   * @param  registerStarDate
+   * @param  registerEndDate the date range of salon register in website
+   * @param  flag salon apply status
+   */
+  val SalonAppliedSearchForm :Form[MeifanSalonApySearch] = Form(mapping(
+    "id" -> text,
+    "salonName" -> text,
+    "industry" -> text,
     "registerStarDate" -> date,
     "registerEndDate" -> date,
     "flag" -> number
@@ -29,17 +37,34 @@ object MeifanSalonApplies extends Controller {
 
   )
 
+  /**
+   * Define a function to a page
+   * @param p the page want go
+   * @return
+   */
   def Home(p: Int) = Redirect(routes.MeifanSalonApplies.list(p))
 
+  /**
+   * Show all apply salon items in a page
+   * @param page the page want to go
+   * @return
+   */
   def list(page :Int = 0) = Action { implicit request =>
     val salonsApply :List[SalonApply] = SalonApply.findAllAPSalons(Salon.findAll.toList)
     val offset = page * pageSize
     val currentPage = new Page[SalonApply](salonsApply.slice(offset,offset+ pageSize), page, offset, salonsApply.length)
-    Ok(views.html.salon.applySalons(SalonAppliedForm, currentPage))
+    Ok(views.html.salon.applySalons(SalonAppliedSearchForm, currentPage)).withSession("page" -> page.toString)
   }
 
-  def agreeMeifanSalonApy(salonId: ObjectId, page: Int) = Action { implicit request =>
+  /**
+   * Agree a apply item from salon to meifan websit
+   * by manager checkout
+   * @param salonId objectId of salon
+   * @return
+   */
+  def agreeMeifanSalonApy(salonId: ObjectId) = Action { implicit request =>
     val salon :Option[Salon] = Salon.findOneById(salonId)
+    val page = {request.session.get("page").map{p=>p}getOrElse{"0"}}.toInt
     salon.map{ s =>
       SalonApply.agreeSalonApy(s)
       Home(page).flashing("success" -> "%s has become a salon".format(s.salonName))
@@ -49,8 +74,15 @@ object MeifanSalonApplies extends Controller {
 
   }
 
-  def rejectMeifanSalonApy(salonId: ObjectId, page: Int) = Action { implicit request =>
+  /**
+   * Reject a apply item from salon to meifan websit
+   * by manager checkout
+   * @param salonId objectId of salon
+   * @return
+   */
+  def rejectMeifanSalonApy(salonId: ObjectId) = Action { implicit request =>
     val salon :Option[Salon] = Salon.findOneById(salonId)
+    val page = {request.session.get("page").map{p=>p}getOrElse{"0"}}.toInt
     salon.map{ s =>
       SalonApply.rejectSalonApy(s)
       Home(page).flashing("success" -> "%s has denied".format(s.salonName))
@@ -59,6 +91,12 @@ object MeifanSalonApplies extends Controller {
     }
   }
 
+  /**
+   *
+   * @param salonId
+   * @param page
+   * @return
+   */
   def getItemDetail(salonId: ObjectId, page :Int) = Action { implicit request =>
     val salon :Option[Salon] = Salon.findOneById(salonId)
     salon.map{ s=>
@@ -68,14 +106,25 @@ object MeifanSalonApplies extends Controller {
     }
   }
 
+
   def getByCondition = Action { implicit request =>
-    SalonAppliedForm.bindFromRequest.fold(
-      formWithErrors => BadRequest(views.html.index()),
+    SalonAppliedSearchForm.bindFromRequest.fold(
+      formWithErrors => BadRequest(views.html.index("")),
       meifanSalonApySearch => {
 
-
+      Home(0)
       }
     )
+  }
+
+  /**
+   * return to the preview page after in a page about
+   * information while you want to back
+   * @return
+   */
+  def retrunToPrePage = Action { implicit request =>
+    val page = request.session.get("page").map{p=>p}getOrElse{"0"}
+    Home((page).toInt)
   }
 
 }

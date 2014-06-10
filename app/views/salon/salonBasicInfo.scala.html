@@ -1,0 +1,93 @@
+@(salon: models.portal.salon.Salon, itemType: String)(implicit flash: play.api.mvc.Flash)
+
+@main {
+
+  @flash.get("success").map { message =>
+    <div class="alert-message warning">
+      <strong>Done!</strong> @message
+    </div>
+  }
+
+  <table class="computers zebra-striped">
+    <tbody>
+      <tr>
+        <td>@Messages("salon.basicInfo.AccountId")</td>
+        <td>@salon.salonAccount.accountId</td>
+      </tr>
+      <tr>
+        <td>@Messages("salon.basicInfo.salonName")</td>
+        <td>@salon.salonName</td>
+      </tr>
+      <tr>
+        <td>@Messages("salon.basicInfo.attrName")</td>
+        <td>@salon.salonNameAbbr</td>
+      </tr>
+      <tr>
+        <td>@Messages("salon.basicInfo.homePage")</td>
+        <td>@salon.homepage</td>
+      </tr>
+      <tr>
+        <td>@Messages("salon.basicInfo.address")</td>
+        <td>@salon.salonAddress.map { address =>
+          @address.province
+          -
+          @address.city
+          -
+          @address.region
+          -
+          @address.town
+          -
+          @address.addrDetail
+        }</td>
+      </tr>
+      <tr>
+        <td>@Messages("salon.basicInfo.workTime")</td>
+        <td>
+          @salon.workTime.map{openTime => openTime}getOrElse{@Messages("result.isEmpty")}
+          -
+          @salon.workTime.map{closeTime => closeTime}getOrElse{@Messages("result.isEmpty")}
+        </td>
+      </tr>
+      <tr>
+        <td>@Messages("salon.basicInfo.contactPhone")</td>
+        <td>@salon.contactMethod.mainPhone</td>
+      </tr>
+      <tr>
+        <td>@Messages("salon.basicInfo.contactPeople")</td>
+        <td>@salon.contactMethod.contact</td>
+      </tr>
+      <tr>
+        <td>@Messages("salon.basicInfo.contactEmail")</td>
+        <td>@salon.contactMethod.email</td>
+      </tr>
+      <tr>
+        <td>@Messages("salon.basicInfo.contactOtherMD")</td>
+        <td> @salon.optContactMethods.map { contact =>
+          @Messages("salon.basicInfo.contactMethod") - @contact.contMethodType
+          @Messages("salon.basicInfo.contactNumber") - @contact.accounts.map { account =>
+          @account <br />
+        }
+        }</td>
+      </tr>
+      <tr>
+        <td>@Messages("salon.basicInfo.establishDate")</td>
+        <td>@salon.establishDate.map { establishDate =>
+          @establishDate.format("yyyy-MM-dd")
+        }</td>
+      </tr>
+      <tr>
+        <td>@Messages("salon.basicInfo.restDay")</td>
+        <td>
+          <div class="restDays">
+          @salon.restDays.map { restDay =>
+            @restDay.restWay <br />
+
+            @restDay.restDay.map { day =>
+              @day
+            }
+          }
+        </td>
+      </tr>
+    </tbody>
+  </table>
+}

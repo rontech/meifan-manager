@@ -3,9 +3,11 @@
     @****************************************
     * Helper generating navigation links    *
     ****************************************@
-  @link(page :Int)= {
-    routes.MeifanSalonApplies.list(page)
+  @link(page :Int) = {
+    @routes.MeifanSalonApplies.list(page)
   }
+
+
 
     @**********************************
     * Helper generating table headers *
@@ -36,27 +38,32 @@
       <a class="btn success" id="add" href="#">Add a new computer</a>
 
     </div>*@
+    @views.html.salon.searchForm(SalonAppliedForm,"SALON_APPLY")
 
     @Option(currentPage.items).filterNot(_.isEmpty).map { salons =>
 
     <table class="computers zebra-striped">
       <thead>
         <tr>
-          <th class="header">店铺ID</th>
-          <th class="header">店铺名</th>
-          <th class="header">店铺行业</th>
-          <th class="header">联系电话</th>
-          <th class="header">联系人</th>
-          <th class="header">邮箱</th>
-          <th class="header">平台注册日期</th>
-          <th class="header">完成事项</th>
-          <th class="header">操作</th>
+          <th class="header">
+            <input type='checkbox' name=''/>@Messages("manager.operate.selectAll")
+          </th>
+          <th class="header">@Messages("salon.basicInfo.AccountId")</th>
+          <th class="header">@Messages("salon.basicInfo.salonName")</th>
+          <th class="header">@Messages("salon.basicInfo.industry")</th>
+          <th class="header">@Messages("salon.basicInfo.contactPhone")</th>
+          <th class="header">@Messages("salon.basicInfo.contactPeople")</th>
+          <th class="header">@Messages("salon.basicInfo.contactEmail")</th>
+          <th class="header">@Messages("salon.basicInfo.establishDate")</th>
+          <th class="header">@Messages("meifanManger.salon.finishItem")</th>
+          <th class="header">@Messages("manager.operate")</th>
          </tr>
       </thead>
       <tbody>
 
       @salons.map { salonApyItem =>
           <tr>
+            <td><input type='checkbox' name=''/></td>
             <td>@salonApyItem.salon.salonAccount.accountId</td>
             <td>@salonApyItem.salon.salonName</td>
             <td>@salonApyItem.salon.salonIndustry.map{industry => @industry &nbsp;}</td>
@@ -64,11 +71,17 @@
             <td>@salonApyItem.salon.contactMethod.contact</td>
             <td>@salonApyItem.salon.contactMethod.email</td>
             <td>@salonApyItem.salon.registerDate.format("yyyy-MM-dd")</td>
-            <td>@salonApyItem.finishedItem.map{item => @item  &nbsp;}</td>
             <td>
-              <a href="@routes.MeifanSalonApplies.agreeMeifanSalonApy(salonApyItem.salon.id, currentPage.page)"><span>同意</span><b></b></a>
-              <a href="@routes.MeifanSalonApplies.rejectMeifanSalonApy(salonApyItem.salon.id, currentPage.page)"><span>拒绝</span><b></b></a>
-              <a href="@routes.MeifanSalonApplies.getItemDetail(salonApyItem.salon.id, currentPage.page)"><span>查看</span><b></b></a>
+              @if(salonApyItem.finishedItem.nonEmpty){
+                @salonApyItem.finishedItem.map{item =>
+                <a href="/get@item/meifanSalonApy">  @Messages("meifanManger.salon." + item)</a>  &nbsp;
+                }
+              }else { <em>-</em> }
+            </td>
+            <td>
+              <a href="@routes.MeifanSalonApplies.agreeMeifanSalonApy(salonApyItem.salon.id)"><span>@Messages("manager.operate.agree")</span><b></b></a>
+              <a href="@routes.MeifanSalonApplies.rejectMeifanSalonApy(salonApyItem.salon.id)"><span>@Messages("manager.operate.reject")</span><b></b></a>
+              @*<a href="@routes.MeifanSalonApplies.getItemDetail(salonApyItem.salon.id, currentPage.page)"><span>查看</span><b></b></a>*@
             </td>
           </tr>
 
@@ -81,11 +94,11 @@
       <ul>
         @currentPage.prev.map { page =>
         <li class="prev">
-          <a href="@link(page)">&larr; 上一页</a>
+          <a href="@link(page)">&larr; @Messages("manager.operate.prePage")</a>
         </li>
         }.getOrElse {
           <li class="prev disabled">
-            <a>&larr; 上一页</a>
+            <a>&larr; @Messages("manager.operate.prePage")</a>
           </li>
         }
       <li class="current">
@@ -93,11 +106,11 @@
       </li>
         @currentPage.next.map { page =>
         <li class="next">
-          <a href="@link(page)">下一页 &rarr;</a>
+          <a href="@link(page)">@Messages("manager.operate.nextPage") &rarr;</a>
         </li>
         }.getOrElse {
           <li class="next disabled">
-            <a>下一页 &rarr;</a>
+            <a>@Messages("manager.operate.nextPage") &rarr;</a>
           </li>
         }
       </ul>

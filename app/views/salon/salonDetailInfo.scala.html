@@ -1,0 +1,91 @@
+@(salon: models.portal.salon.Salon, itemType: String)(implicit flash: play.api.mvc.Flash)
+
+@main {
+
+
+  @flash.get("success").map { message =>
+    <div class="alert-message warning">
+      <strong>Done!</strong> @message
+    </div>
+  }
+
+  <table>
+    <tbody>
+      <tr>
+        <td>@Messages("salon.detailInfo.seatNums")</td>
+        <td>@salon.seatNums.map{set => set}getOrElse{无}</td>
+      </tr>
+      <tr>
+        <td>@Messages("salon.detailInfo.facilities")</td>
+        <td>@salon.salonFacilities.map{ facilities =>
+          @if(facilities.canOnlineOrder){
+            @Messages("salon.canOnlineOrder")
+            &nbsp;
+          }
+
+          @if(facilities.canImmediatelyOrder){
+            @Messages("salon.canImmediatelyOrder")
+            &nbsp;
+          }
+
+          @if(facilities.canNominateOrder){
+            @Messages("salon.canNominateOrder")
+            &nbsp;
+          }
+
+          @if(facilities.canCurntDayOrder){
+            @Messages("salon.canCurntDayOrder")
+            &nbsp;
+          }
+
+          @if(facilities.canMaleUse){
+            @Messages("salon.canMaleUse")
+            &nbsp;
+          }
+
+          @if(facilities.isPointAvailable){
+            @Messages("salon.isPointAvailable")
+            &nbsp;
+          }
+
+          @if(facilities.isPosAvailable){
+            @Messages("salon.isPosAvailable")
+            &nbsp;
+          }
+
+          @if(facilities.isWifiAvailable){
+            @Messages("salon.isWifiAvailable")
+            &nbsp;
+          }
+
+          @if(facilities.hasParkingNearby){
+            @Messages("salon.hasParkingNearby")
+            &nbsp;
+          }
+        }
+        </td>
+      </tr>
+      <tr>
+        <td>@Messages("salon.detailInfo.parkingDesc")</td>
+        <td>@salon.salonFacilities.map{ facilities =>
+          @if(facilities.hasParkingNearby) {
+            @facilities.parkingDesc
+          }
+        }
+        </td>
+      </tr>
+      <tr>
+        <td>@Messages("salon.detailInfo.salonIntroduction")</td>
+        <td>@salon.salonIntroduction.map { introduction =>
+          @Messages("salon.detailInfo.introHeader")： @introduction.introHeader <br>
+          @Messages("salon.detailInfo.introContent")： @introduction.introContent <br>
+          @Messages("salon.detailInfo.introFooter")：@introduction.introFooter <br>
+        }getOrElse{
+          @Messages("result.isEmpty")
+          }
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+}

@@ -1,43 +1,36 @@
-@(MeifanSalonForm: Form[AnyRef], itemType :String)
+@(MeifanSalonForm: Form[ models.portal.manager.MeifanSalonApySearch], itemType :String)
 @import helper._
 
-@itemType match{
-  @case "SALON_APPLY" => {
+<div>
+@if(itemType.equals("SALON_APPLY")) {
+
     @helper.form(routes.MeifanSalonApplies.getByCondition){
-      @inputText(MeifanSalonForm("id"), '_label -> "店铺ID")
-      @inputText(MeifanSalonForm("salonName"), '_label -> "店铺名")
+      @inputText(MeifanSalonForm("id"), '_label -> Messages("salon.basicInfo.AccountId"))
+      @inputText(MeifanSalonForm("salonName"), '_label -> Messages("salon.basicInfo.salonName"))
+      @*
       @select(
-        MeifanSalonForm("flag"),
-        options = options("Hairdressing"-> Messages("industry.industryName.Hairdressing"),
-          "0" -> "申请中",
-          "1" -> "已同意",
-          "2" -> "已拒绝"
-        ),
+        MeifanSalonForm("industry"),
+        options = options(models.portal.industry.Industry.findAll.toList),
         '_label -> "状态", '_default -> 0,
         '_showConstraints -> false
-      )
-      @inputText(MeifanSalonForm("registerStarDate"), '_label -> "平台注册日期")
-      @inputText(MeifanSalonForm("registerEndDate"), '_label -> None)
+      )*@
+      @inputDate(MeifanSalonForm("registerStarDate"),'_label -> Messages("salon.basicInfo.establishDate") , '_help -> "")
+      -
+      @inputDate(MeifanSalonForm("registerEndDate"),'_label -> None , '_help -> "")
 
+      @*
       @select(
         MeifanSalonForm("flag"),
-        options = options("Hairdressing"-> Messages("industry.industryName.Hairdressing"),
-          "0" -> "申请中",
-          "1" -> "已同意",
-          "2" -> "已拒绝"
+        options = options(
+          "0" -> Messages("manager.status.applied"),
+          "1" -> Messages("manager.status.agreed"),
+          "2" -> Messages("manager.status.rejected")
         ),
-        '_label -> "状态", '_default -> 0,
+        '_label -> Messages("manager.status"), '_default -> 0,
         '_showConstraints -> false
       )
-    }
-  }
-
-  @case "SALON_MANAGER" => {
+      *@
 
   }
-
-  @case "SALON_PERMISSION" => {
-
-  }
-
 }
+</div>
