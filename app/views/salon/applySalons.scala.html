@@ -1,4 +1,4 @@
-@(SalonAppliedForm: Form[ models.portal.manager.MeifanSalonApySearch],currentPage: models.portal.manager.Page[models.portal.manager.SalonApply])(implicit flash: play.api.mvc.Flash)
+@(SalonAppliedForm: Form[ models.portal.manager.MeifanSalonApySearch], salonIdForm:Form[List[String]], currentPage: models.portal.manager.Page[models.portal.manager.SalonApply])(implicit flash: play.api.mvc.Flash)
 @import models.portal.manager._
     @****************************************
     * Helper generating navigation links    *
@@ -28,6 +28,7 @@
       </div>
     }
 
+    @Option(currentPage.items).filterNot(_.isEmpty).map { salons =>
     @*<div id="actions">
 
       @*helper.form(action=routes.Application.list()) {
@@ -40,13 +41,27 @@
     </div>*@
     @views.html.salon.searchForm(SalonAppliedForm,"SALON_APPLY")
 
-    @Option(currentPage.items).filterNot(_.isEmpty).map { salons =>
+
+    @if(salons.exists(p=>p.salon.salonStatus.isValid == true)){
+      <div>
+
+        <a class="btn disabled page_btn" id="add" href="#">&larr; @Messages("manager.status.delete")</a>
+
+        <a class="btn disabled page_btn" id="add" href="#">&larr; @Messages("manager.status.active")</a>
+
+      </div>
+    }else{
+      <a class="btn disabled page_btn" id="add" href="#">&larr; @Messages("manager.operate.agree")</a>
+
+      <a class="btn disabled page_btn" id="add" href="#">&larr; @Messages("manager.operate.reject")</a>
+    }
+
 
     <table class="computers zebra-striped">
       <thead>
         <tr>
           <th class="header">
-            <input type='checkbox' name=''/>@Messages("manager.operate.selectAll")
+            <a href="javascript:void(0);" class="selectAll"><input type='checkbox' class="boxChecked"/>@Messages("manager.operate.selectAll")</a>
           </th>
           <th class="header">@Messages("salon.basicInfo.AccountId")</th>
           <th class="header">@Messages("salon.basicInfo.salonName")</th>
@@ -61,9 +76,10 @@
       </thead>
       <tbody>
 
-      @salons.map { salonApyItem =>
+
+        @for((salonApyItem, i) <- salons.zipWithIndex){
           <tr>
-            <td><input type='checkbox' name=''/></td>
+            <td><input type='checkbox' name='salonId[@i]'/></td>
             <td>@salonApyItem.salon.salonAccount.accountId</td>
             <td>@salonApyItem.salon.salonName</td>
             <td>@salonApyItem.salon.salonIndustry.map{industry => @industry &nbsp;}</td>
@@ -74,14 +90,12 @@
             <td>
               @if(salonApyItem.finishedItem.nonEmpty){
                 @salonApyItem.finishedItem.map{item =>
-                <a href="/get@item/meifanSalonApy">  @Messages("meifanManger.salon." + item)</a>  &nbsp;
+                <a href="/get@item/@salonApyItem.salon.id">  @Messages("meifanManger.salon." + item)</a>  &nbsp;
                 }
               }else { <em>-</em> }
             </td>
             <td>
-              <a href="@routes.MeifanSalonApplies.agreeMeifanSalonApy(salonApyItem.salon.id)"><span>@Messages("manager.operate.agree")</span><b></b></a>
-              <a href="@routes.MeifanSalonApplies.rejectMeifanSalonApy(salonApyItem.salon.id)"><span>@Messages("manager.operate.reject")</span><b></b></a>
-              @*<a href="@routes.MeifanSalonApplies.getItemDetail(salonApyItem.salon.id, currentPage.page)"><span>查看</span><b></b></a>*@
+              @views.html.salon.salonOperateItem(salonApyItem.salon)
             </td>
           </tr>
 
@@ -102,7 +116,7 @@
           </li>
         }
       <li class="current">
-        <a>Displaying @(currentPage.offset + 1) to @(currentPage.offset + 10) of @currentPage.total</a>
+        <a>Displaying @(currentPage.offset + 1) to @(currentPage.offset + currentPage.items.length) of @currentPage.total</a>
       </li>
         @currentPage.next.map { page =>
         <li class="next">
@@ -122,6 +136,6 @@
         <em>Nothing to display</em>
       </div>
     }
-
-
 }
+  <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"> </script>
+  <script src="@routes.Assets.at("javascripts/managerSalon.js")" type="text/javascript"> </script>

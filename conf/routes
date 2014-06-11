@@ -20,6 +20,8 @@ POST        /searchApySalon                          controllers.MeifanSalonAppl
 GET         /retrunToPrePage                         controllers.MeifanSalonApplies.retrunToPrePage
 
 # meifan salon manager
-GET         /getBasicInfo/:itemType/:salonId         controllers.MeifanSalonManager.getBasicInfo(itemType :String, salonId :ObjectId)
-GET         /getDetailInfo/:itemType/:salonId        controllers.MeifanSalonManager.getDetailInfo(itemType :String, salonId :ObjectId)
-GET         /getImageInfo/:itemType/:salonId         controllers.MeifanSalonManager.getImageInfo(itemType :String, salonId :ObjectId)
+GET         /getBasicInfo/:salonId                   controllers.MeifanSalonManager.getBasicInfo(salonId :ObjectId)
+GET         /getDetailInfo/:salonId                  controllers.MeifanSalonManager.getDetailInfo(salonId :ObjectId)
+GET         /getImageInfo/:salonId                   controllers.MeifanSalonManager.getImageInfo(salonId :ObjectId)
+GET         /deleteSalon/:salonId                    controllers.MeifanSalonManager.deleteMeifanSalon(salonId :ObjectId)
+GET         /activeSalon/:salonId                    controllers.MeifanSalonManager.activeMeifanSalon(salonId :ObjectId)

@@ -8,6 +8,11 @@ import views._
 import models.portal.salon._
 import models.portal.manager._
 import play.api.data.Forms._
+import play.cache.Cache
+import models.portal.manager.Page
+import models.portal.manager.MeifanSalonApySearch
+import models.portal.manager.Page
+import models.portal.manager.MeifanSalonApySearch
 
 
 /**
@@ -16,6 +21,14 @@ import play.api.data.Forms._
 object MeifanSalonApplies extends Controller {
   //a constant for page size
   val pageSize :Int = 10
+
+  //0表示正在申请中状态
+  val meifanSalonFlagisApy = 0
+
+  //
+  val meifanAppliedSalons :String = "meifanAppliedSalons"
+
+
 
   /**
    * The play form for search salon which has applied
@@ -27,12 +40,12 @@ object MeifanSalonApplies extends Controller {
    * @param  flag salon apply status
    */
   val SalonAppliedSearchForm :Form[MeifanSalonApySearch] = Form(mapping(
-    "id" -> text,
-    "salonName" -> text,
-    "industry" -> text,
-    "registerStarDate" -> date,
-    "registerEndDate" -> date,
-    "flag" -> number
+    "id" -> optional(text),
+    "salonName" -> optional(text),
+    "industry" -> optional(text),
+    "registerStarDate" -> optional(date),
+    "registerEndDate" -> optional(date),
+    "flag" -> optional(number)
   )(MeifanSalonApySearch.apply)(MeifanSalonApySearch.unapply)
 
   )
@@ -50,10 +63,29 @@ object MeifanSalonApplies extends Controller {
    * @return
    */
   def list(page :Int = 0) = Action { implicit request =>
-    val salonsApply :List[SalonApply] = SalonApply.findAllAPSalons(Salon.findAll.toList)
+    var salonsApply :List[SalonApply] = Nil
+    val cac = Cache.get(meifanAppliedSalons)
+    cac match {
+      /*case Some(cachedValue) =>{
+        println("match"+cachedValue)
+        salonsApply = cachedValue.asInstanceOf[List[SalonApply]]
+      }
+      can't mach anything while the object is exists
+      */
+
+      case null => {
+        salonsApply = SalonApply.findAllAPSalons(Salon.findAll.toList, meifanSalonFlagisApy)
+        Cache.set(meifanAppliedSalons, salonsApply)
+      }
+
+      case __ =>{
+        salonsApply = cac.asInstanceOf[List[SalonApply]]
+      }
+    }
+    //val salonsApply :List[SalonApply] = SalonApply.findAllAPSalons(Salon.findAll.toList)
     val offset = page * pageSize
     val currentPage = new Page[SalonApply](salonsApply.slice(offset,offset+ pageSize), page, offset, salonsApply.length)
-    Ok(views.html.salon.applySalons(SalonAppliedSearchForm, currentPage)).withSession("page" -> page.toString)
+    Ok(views.html.salon.applySalons(SalonAppliedSearchForm, MeifanSalonManager.salonIdForm, currentPage)).withSession("page" -> page.toString)
   }
 
   /**
@@ -108,11 +140,14 @@ object MeifanSalonApplies extends Controller {
 
 
   def getByCondition = Action { implicit request =>
+    Cache.set(meifanAppliedSalons, null)
     SalonAppliedSearchForm.bindFromRequest.fold(
       formWithErrors => BadRequest(views.html.index("")),
       meifanSalonApySearch => {
 
-      Home(0)
+        val apySalons :List[SalonApply]= SalonApply.findSalonApyByCondition(meifanSalonApySearch)
+        Cache.set(meifanAppliedSalons, apySalons)
+        Home(0)
       }
     )
   }
