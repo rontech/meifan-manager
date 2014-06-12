@@ -25,3 +25,7 @@ GET         /getDetailInfo/:salonId                  controllers.MeifanSalonMana
 GET         /getImageInfo/:salonId                   controllers.MeifanSalonManager.getImageInfo(salonId :ObjectId)
 GET         /deleteSalon/:salonId                    controllers.MeifanSalonManager.deleteMeifanSalon(salonId :ObjectId)
 GET         /activeSalon/:salonId                    controllers.MeifanSalonManager.activeMeifanSalon(salonId :ObjectId)
+
+
+#Jump to Admin Login Page.
+POST   /adminLogin                                   controllers.auth.Admins.login

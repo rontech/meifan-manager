@@ -1,31 +1,43 @@
-@(loginForm: Form[Option[models.manager.admin.Admin]])(implicit flash: Flash)
+@(loginForm: Form[Option[models.portal.user.User]])(implicit flash: Flash)
 
- @import helper._
+@import helper._
 
-         @main(title = Messages("admin.login")) {
+@main(title = Messages("user.userLogin")) {
 
-         <div class = "loginBlack">
-             <h2 class = "loginBlack h">@Messages("登录")</h2>
 
-         </div>
+<div class="contentsTitleWrapper">
+    <h2 class="contentsTitleInner mT10">@Messages("user.login")</h2>
+</div>
+<div class=" w1" id="entry">
+    <div class="mc " id="bgDiv">
+        <div class="form">
+            @form(action = auth.routes.Admins.login(), 'method ->"post"){
+            <div class="item fore1">
+                <span>@Messages("user.name")</span>
+                <div class="item-ifo">
+                    @inputText(field = loginForm("adminId"), '_label -> None, 'placeholder -> Messages("admin.name"), 'class -> "text",
+                    '_error ->  loginForm("adminId").error.map(_.withMessage(Messages("admin.loginUserIdErr"))), '_help -> ""
+                    )
+                </div>
+            </div>
+            <div class="item fore2">
+                <span>@Messages("user.password")</span>
+                <div class="item-ifo">
+                    @inputPassword(field = loginForm("password"), '_label -> None, 'placeholder ->Messages("admin.password"), 'class -> "text",
+                    '_error -> loginForm.globalError.map(_.withMessage(Messages("admin.loginErr"))))
+                </div>
+            </div>
 
-         @form(action = auto.routes.Admin.login(),'method -> "post"){
-         <div class = "item name">
-             <span>@Messages("admin.name")</span>
-             <div class = "item-name">
-                 @inputText(field = loginForm("adminId"),'_label -> None,'placeholder -> Messages("admin.name"),'class ->
-                 "text",'_error -> loginForm("adminId".error.map(_.withMessages("Messages("admin.loginAdminIdErr))),'_help ->""
-                 )
-             </div>
-         </div>
 
-         <div class="item password">
-             <span>@Messages("admin.password")</span>
-             <div class="item-password">
-                   @inputText(field = loginForm("password"),'_label -> None,'placeholder -> Messages("admin.password"),'class ->
-                   "text",'_error -> loginForm.globalError.map(_.withMessages("Messages("admin.loginErr))))
-             </div>
-         </div>
+            }
+        </div>
 
-        }
-  }
+    </div>
+</div>
+}
+
+
+
+
+
+
