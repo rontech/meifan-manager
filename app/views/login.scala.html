@@ -1,0 +1,31 @@
+@(loginForm: Form[Option[models.manager.admin.Admin]])(implicit flash: Flash)
+
+ @import helper._
+
+         @main(title = Messages("admin.login")) {
+
+         <div class = "loginBlack">
+             <h2 class = "loginBlack h">@Messages("登录")</h2>
+
+         </div>
+
+         @form(action = auto.routes.Admin.login(),'method -> "post"){
+         <div class = "item name">
+             <span>@Messages("admin.name")</span>
+             <div class = "item-name">
+                 @inputText(field = loginForm("adminId"),'_label -> None,'placeholder -> Messages("admin.name"),'class ->
+                 "text",'_error -> loginForm("adminId".error.map(_.withMessages("Messages("admin.loginAdminIdErr))),'_help ->""
+                 )
+             </div>
+         </div>
+
+         <div class="item password">
+             <span>@Messages("admin.password")</span>
+             <div class="item-password">
+                   @inputText(field = loginForm("password"),'_label -> None,'placeholder -> Messages("admin.password"),'class ->
+                   "text",'_error -> loginForm.globalError.map(_.withMessages("Messages("admin.loginErr))))
+             </div>
+         </div>
+
+        }
+  }
