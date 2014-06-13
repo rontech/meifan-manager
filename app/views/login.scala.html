@@ -1,8 +1,8 @@
-@(loginForm: Form[Option[models.portal.user.User]])(implicit flash: Flash)
+@(loginForm: Form[Option[models.manager.admin.Admin]])
 
 @import helper._
 
-@main(title = Messages("user.userLogin")) {
+@main {
 
 
 <div class="contentsTitleWrapper">
@@ -15,7 +15,7 @@
             <div class="item fore1">
                 <span>@Messages("user.name")</span>
                 <div class="item-ifo">
-                    @inputText(field = loginForm("adminId"), '_label -> None, 'placeholder -> Messages("admin.name"), 'class -> "text",
+                    @inputText(field = loginForm("adminId"), '_label -> None, 'placeholder -> Messages("user.name"), 'class -> "text",
                     '_error ->  loginForm("adminId").error.map(_.withMessage(Messages("admin.loginUserIdErr"))), '_help -> ""
                     )
                 </div>
@@ -23,12 +23,12 @@
             <div class="item fore2">
                 <span>@Messages("user.password")</span>
                 <div class="item-ifo">
-                    @inputPassword(field = loginForm("password"), '_label -> None, 'placeholder ->Messages("admin.password"), 'class -> "text",
+                    @inputPassword(field = loginForm("password"), '_label -> None, 'placeholder ->Messages("user.password"), 'class -> "text",
                     '_error -> loginForm.globalError.map(_.withMessage(Messages("admin.loginErr"))))
                 </div>
             </div>
 
-
+            <input type= "submit" class = "btn-img btn-entry" value="@Messages("user.loginBtn")">
             }
         </div>
 
