@@ -1,0 +1,18 @@
+@(salon: models.portal.salon.Salon, itemType: String)(implicit flash: play.api.mvc.Flash)
+
+@main {
+  <p>@Messages("salon.imgInfo.bussinessPhoto")</p>
+  @if(salon.salonPics.exists(a => a.picUse.equals("SalonCheck"))){
+    @salon.salonPics.map{p =>
+      @if(p.picUse.equals("SalonCheck")){
+        <div class="taC"><img src="@routes.Application.getPhoto(p.fileObjId)" class="bdImgGray"  width="205" height="150"/></div>
+        <p class="fgGray fs10 mT10 taC">@p.description</p>
+      }
+    }
+    <div><a class="btn success" id="add" href="#">@Messages("manager.operate.agree")</a></div>
+    <div><a class="btn success" id="add" href="#">@Messages("manager.operate.reject")</a></div>
+  }else{
+    @Messages("manager.noBusinessLicencePhoto")
+  }
+
+}

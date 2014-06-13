@@ -1,0 +1,112 @@
+@(salon: models.portal.salon.Salon)
+
+<tr>
+  <td height="20" bgcolor="#FFFFFF">
+      <input type="checkbox" name="checkbox2" value="checkbox" />
+  </td>
+  <td height="20" bgcolor="#FFFFFF">
+    <div align="center" class="STYLE1">
+      <div align="center">
+        salon.salonAccount
+      </div>
+    </div>
+  </td>
+  <td height="20" bgcolor="#FFFFFF">
+    <div align="center">
+      <span class="STYLE1">
+        salon.salonName
+      </span>
+    </div>
+  </td>
+  <td height="20" bgcolor="#FFFFFF">
+    <div align="center">
+      <span class="STYLE1">
+        salon.salonIndustry.map{industry =>
+      industry &nbsp;
+        }
+      </span>
+    </div>
+  </td>
+  <td bgcolor="#FFFFFF">
+    <div align="center">
+      <span class="STYLE1">
+        salon.contactMethod.mainPhone
+      </span>
+    </div>
+  </td>
+  <td height="20" bgcolor="#FFFFFF">
+    <div align="center">
+      <span class="STYLE1">
+        salon.contactMethod.contact
+      </span>
+    </div>
+  </td>
+  <td height="20" bgcolor="#FFFFFF">
+    <span class="STYLE1">
+      salon.contactMethod.email
+    </span>
+  </td>
+  <td height="20" bgcolor="#FFFFFF">
+    <span class="STYLE1">
+      salon.registerDate.format("yyyy-MM-dd")
+    </span>
+  </td>
+  <td height="20" bgcolor="#FFFFFF">
+    <span class="STYLE1">
+      基本资料
+      @if(models.portal.salon.Salon.checkBasicInfoIsFill(salon)){
+        <b class="iconfont greenfont">
+
+        </b>
+      }else{
+        <b class="iconfont redfont">
+
+        </b>
+      }
+    </span>
+    <span class="STYLE1">
+      详细资料
+      @if(models.portal.salon.Salon.checkDetailIsFill(salon)){
+        <b class="iconfont greenfont">
+
+        </b>
+      }else{
+        <b class="iconfont redfont">
+
+        </b>
+      }
+    </span>
+    <span class="STYLE1">
+      店铺图片
+    @if(models.portal.salon.Salon.checkImgIsExist(salon)){
+      <b class="iconfont greenfont">
+
+      </b>
+    }else{
+      <b class="iconfont redfont">
+
+      </b>
+    }
+    </span>
+  </td>
+  <td height="20" bgcolor="#FFFFFF">
+    <span class="STYLE1">
+      <b class="iconfont greenfont">
+
+      </b>
+      同意
+    </span>
+    <span class="STYLE1">
+      <b class="iconfont redfont">
+
+      </b>
+      拒绝
+    </span>
+    <span class="STYLE1">
+      <b class="iconfont checkfont">
+
+      </b>
+      查看
+    </span>
+  </td>
+</tr>

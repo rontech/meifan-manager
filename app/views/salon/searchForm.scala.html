@@ -1,0 +1,36 @@
+@(MeifanSalonForm: Form[ models.portal.manager.MeifanSalonApySearch], itemType :String)
+@import helper._
+
+<div>
+@if(itemType.equals("SALON_APPLY")) {
+
+    @helper.form(routes.MeifanSalonApplies.getByCondition){
+      @inputText(MeifanSalonForm("id"), '_label -> Messages("salon.basicInfo.AccountId"))
+      @inputText(MeifanSalonForm("salonName"), '_label -> Messages("salon.basicInfo.salonName"))
+      @*
+      @select(
+        MeifanSalonForm("industry"),
+        options = options(models.portal.industry.Industry.findAll.toList),
+        '_label -> "状态", '_default -> 0,
+        '_showConstraints -> false
+      )*@
+      @inputDate(MeifanSalonForm("registerStarDate"),'_label -> Messages("salon.basicInfo.establishDate") , '_help -> "")
+      -
+      @inputDate(MeifanSalonForm("registerEndDate"),'_label -> None , '_help -> "")
+
+      @*
+      @select(
+        MeifanSalonForm("flag"),
+        options = options(
+          "0" -> Messages("manager.status.applied"),
+          "1" -> Messages("manager.status.agreed"),
+          "2" -> Messages("manager.status.rejected")
+        ),
+        '_label -> Messages("manager.status"), '_default -> 0,
+        '_showConstraints -> false
+      )
+      *@
+
+  }
+}
+</div>

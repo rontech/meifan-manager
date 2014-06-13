@@ -1,0 +1,78 @@
+#salon manager apply
+meifanManger.salon.applied = 申请中的店铺，总计{0}
+meifanManger.salon.BasicInfo = 基本资料
+meifanManger.salon.DetailInfo = 详细资料
+meifanManger.salon.ImageInfo = 店铺图片
+meifanManger.salon.finishItem = 完成事项
+
+#salon basicInfo
+salon.basicInfo.AccountId = 店铺账号
+salon.basicInfo.salonName = 店铺名
+salon.basicInfo.attrName = 店铺略称
+salon.basicInfo.industry = 店铺行业
+salon.basicInfo.homePage = 店铺主页
+salon.basicInfo.address = 店铺地址
+salon.basicInfo.workTime = 营业时间
+salon.basicInfo.contactPhone = 联系电话
+salon.basicInfo.contactPeople = 联系人
+salon.basicInfo.contactEmail = 联系邮箱
+salon.basicInfo.contactOtherMD = 其它联系方式
+salon.basicInfo.contactMethod = 联系方式
+salon.basicInfo.contactNumber = 号码
+salon.basicInfo.establishDate = 成立日期
+salon.basicInfo.restDay = 休息日
+
+#salon facilities
+salon.canOnlineOrder=可网上预约
+salon.canOnlineOrderValue=网上预约OK
+salon.canImmediatelyOrder=可即时预约
+salon.canImmediatelyOrderValue=即时预约OK
+salon.canNominateOrder=可指名预约
+salon.canNominateOrderValue=指名预约OK
+salon.canCurntDayOrder=可当日预约
+salon.canCurntDayOrderValue=当日预约OK
+salon.canMaleUse=男性可用
+salon.canMaleUseValue=男性使用OK
+salon.isPointAvailable=Point加盟店
+salon.isPointAvailValue=Point加盟店
+salon.isPosAvailable=可刷卡
+salon.canPosAvailable=可否刷卡
+salon.posAvailable=可刷卡
+salon.posNotAvailable=不可
+salon.isWifiAvailable=免费WiFi
+salon.hasParkingNearby=附近有停车场
+salon.parkingDesc=停车场状况描述
+salon.facilities=可否网上预约
+salon.hasParkingNearByMsg=附近有停车场
+
+#salon detailInfo
+salon.detailInfo.seatNums = 席位数
+salon.detailInfo.facilities = 店铺功能
+salon.detailInfo.parkingDesc = 停车场状况
+salon.detailInfo.salonIntroduction = 店铺情报
+salon.detailInfo.introHeader = 标题
+salon.detailInfo.introContent = 内容
+salon.detailInfo.introFooter = 结束语
+
+#salon imgInfo
+salon.imgInfo.bussinessPhoto = 店铺营业执照
+
+#result is none
+result.isEmpty = 无
+
+#manager to operate
+manager.operate = 操作
+manager.operate.agree = 同意
+manager.operate.reject = 拒绝
+manager.operate.selectAll = 全选
+manager.operate.prePage = 上一页
+manager.operate.nextPage = 下一页
+
+#manager Info
+manager.noBusinessLicencePhoto = 该店铺还未上传营业执照
+
+#manager check status
+manager.status = 状态
+manager.status.applied = 申请中
+manager.status.agreed = 已同意
+manager.status.rejected = 已拒绝
