@@ -18,13 +18,14 @@ object Admins extends Controller{
 
 
   /**
-   * login for user
-   * @return add user to session
+   * login for admin
+   * @return add adminId to session
    */
- def login = Action {implicit request =>
+ def login = Action {
+    implicit request =>
     loginForm.bindFromRequest.fold(
       errors =>BadRequest(views.html.login(loginForm)),
-    admin => Ok(views.html.index(""))
+    admin => Ok(views.html.index(admin.get.adminId)).withSession("login"->admin.get.adminId)
     )
 
 

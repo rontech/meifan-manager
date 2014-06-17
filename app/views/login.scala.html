@@ -3,17 +3,25 @@
 @import helper._
 
 @main {
-
+<style type="text/css">
+    .adminname{
+        margin-top: 10px;
+        margin-left: 200px;
+    }
+    .text{
+        margin-left: 400px;
+    }
+</style>
 
 <div class="contentsTitleWrapper">
-    <h2 class="contentsTitleInner mT10">@Messages("user.login")</h2>
+    <h2 class="contentsTitleInner mT10">@Messages("admin.login")</h2>
 </div>
 <div class=" w1" id="entry">
     <div class="mc " id="bgDiv">
         <div class="form">
             @form(action = auth.routes.Admins.login(), 'method ->"post"){
             <div class="item fore1">
-                <span>@Messages("user.name")</span>
+                <span class="adminname">@Messages("admin.name")</span>
                 <div class="item-ifo">
                     @inputText(field = loginForm("adminId"), '_label -> None, 'placeholder -> Messages("user.name"), 'class -> "text",
                     '_error ->  loginForm("adminId").error.map(_.withMessage(Messages("admin.loginUserIdErr"))), '_help -> ""
@@ -21,7 +29,7 @@
                 </div>
             </div>
             <div class="item fore2">
-                <span>@Messages("user.password")</span>
+                <span>@Messages("admin.password")</span>
                 <div class="item-ifo">
                     @inputPassword(field = loginForm("password"), '_label -> None, 'placeholder ->Messages("user.password"), 'class -> "text",
                     '_error -> loginForm.globalError.map(_.withMessage(Messages("admin.loginErr"))))

@@ -79,3 +79,8 @@ manager.status.rejected = 已拒绝
 manager.status.delete = 注销
 manager.status.active = 激活
 
+#manager login
+admin.login = 管理员登录
+admin.name = 账号
+admin.password = 密码
+

@@ -16,8 +16,14 @@ import models.portal.common.Image
 
 object Application extends Controller {
 
-  def index = Action {
-    Ok(views.html.login(auth.Admins.loginForm))
+  def index = Action {//if admin has login then  redirect to index page else redirect to adminLogin page
+    request =>
+      request.session.get("login").map { adminId =>
+        Ok(views.html.index(adminId))
+      }.getOrElse {
+        Unauthorized("Oops, you are not connected")
+        Ok(views.html.login(auth.Admins.loginForm))
+      }
   }
 
   def getPhoto(file: ObjectId) = Action {
