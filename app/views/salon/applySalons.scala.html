@@ -1,5 +1,6 @@
-@(SalonAppliedForm: Form[ models.portal.manager.MeifanSalonApySearch], salonIdForm:Form[List[String]], currentPage: models.portal.manager.Page[models.portal.manager.SalonApply])(implicit flash: play.api.mvc.Flash)
-@import models.portal.manager._
+@(SalonAppliedForm: Form[ models.manager.MeifanSalonApySearch], salonIdForm:Form[Tuple2[List[String], String]], currentPage: models.manager.Page[models.manager.SalonApply])(implicit flash: play.api.mvc.Flash)
+@import models.manager._
+@import helper._
     @****************************************
     * Helper generating navigation links    *
     ****************************************@
@@ -27,6 +28,7 @@
         <strong>Done!</strong> @message
       </div>
     }
+    @views.html.salon.searchForm(SalonAppliedForm,"SALON_APPLY")
 
     @Option(currentPage.items).filterNot(_.isEmpty).map { salons =>
     @*<div id="actions">
@@ -39,21 +41,38 @@
       <a class="btn success" id="add" href="#">Add a new computer</a>
 
     </div>*@
-    @views.html.salon.searchForm(SalonAppliedForm,"SALON_APPLY")
 
+    @helper.form(routes.MeifanSalonManager.processAllSalons, 'id -> "processAllSalons", 'name -> "processAllSalons"){
 
-    @if(salons.exists(p=>p.salon.salonStatus.isValid == true)){
+    @if(salons.exists(p=>p.salon.salonStatus.applyMeifanFlag == 1)){
       <div>
+          @select(
+              salonIdForm("processType"),
+              options(
+                  "delete" -> Messages("manager.status.delete"),
+                  "active" -> Messages("manager.status.active")
 
-        <a class="btn disabled page_btn" id="add" href="#">&larr; @Messages("manager.status.delete")</a>
-
-        <a class="btn disabled page_btn" id="add" href="#">&larr; @Messages("manager.status.active")</a>
-
+              ),
+              '_default -> Messages("manager.operate.select"),
+              '_label -> None,
+              '_showConstraints -> false
+          )&larr;
+        <input type="submit" value="提交" class="submit" />
       </div>
     }else{
-      <a class="btn disabled page_btn" id="add" href="#">&larr; @Messages("manager.operate.agree")</a>
+        @select(
+            salonIdForm("processType"),
+            options(
+                "agree" -> Messages("manager.operate.agree"),
+                "reject" -> Messages("manager.operate.reject")
 
-      <a class="btn disabled page_btn" id="add" href="#">&larr; @Messages("manager.operate.reject")</a>
+            ),
+            '_default -> Messages("manager.operate.select"),
+            '_label -> None,
+            '_showConstraints -> false
+        )&larr;
+
+        <input type="submit" value="提交" class="submit" />
     }
 
 
@@ -79,7 +98,7 @@
 
         @for((salonApyItem, i) <- salons.zipWithIndex){
           <tr>
-            <td><input type='checkbox' name='salonId[@i]'/></td>
+            <td><input type='checkbox' value="@salonApyItem.salon.id" name='salonId[@i]'/></td>
             <td>@salonApyItem.salon.salonAccount.accountId</td>
             <td>@salonApyItem.salon.salonName</td>
             <td>@salonApyItem.salon.salonIndustry.map{industry => @industry &nbsp;}</td>
@@ -104,6 +123,7 @@
       </tbody>
     </table>
 
+    }
     <div id="pagination" class="pagination">
       <ul>
         @currentPage.prev.map { page =>

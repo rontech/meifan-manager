@@ -1,0 +1,25 @@
+@(userSearchForm: Form[models.manager.UserSearch])
+@import helper._
+
+<div>
+@helper.form(routes.MeifanUserManager.getByCondition) {
+
+    @inputText(userSearchForm("id"), '_label -> Messages("manager.user.accountId"))
+    @select(
+        userSearchForm("isValid"),
+        options(
+            "0" -> Messages("manager.status.invalid"),
+            "1" -> Messages("manager.status.valid")
+
+        ),
+        '_default -> "--chose--",
+        '_label -> Messages("manager.status.apyFlag"),
+        '_showConstraints -> false
+    )
+    <div class="clearfix"></div>
+    @inputDate(userSearchForm("startTime"), '_label -> Messages("manager.user.registerTime"), '_help -> "")
+    @inputDate(userSearchForm("endTime"), '_label -> None, '_help -> "")
+    <input type="submit" value="搜索" />
+    <div class="clearfix"></div>
+}
+</div>

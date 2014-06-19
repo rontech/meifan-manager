@@ -16,3 +16,17 @@ $(".boxChecked").click(
        });
     }
 );
+
+$('.salon_opt_btn').click(function(){
+        alert('ok...')
+    alert($(this).data('salonOperate'))
+        $('#salonProcessType').val('active');
+        //document.processAllSalons.submit();
+    alert('ok');
+    $(".submit").live("click",function(){
+        alert("自动点击链接被点击！");
+    });
+    //location.href='/processAllSalons'
+    //document.getElementById('salonProcessType').submit();
+        //$('#processAllSalons').submit();
+})

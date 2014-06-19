@@ -7,16 +7,17 @@ import com.mongodb.casbah.commons.Imports._
 import models._
 import views._
 import models.portal.salon._
-import models.portal.manager._
 import play.api.data.Forms._
 import controllers._
+import play.cache.Cache
+import models.manager._
 
 
 /**
  * Created by HZ-HAN on 14/06/10.
  */
 object MeifanSalonManager extends Controller {
-  val salonIdForm :Form[List[String]]  = Form("salonId" -> list(text))
+  val salonIdForm :Form[Tuple2[List[String],String]]  = Form(tuple("salonId" -> list(text),"processType" -> text))
   /**
    * Get salon basic baseInfo, just return to basicInfo page with salon object
    *
@@ -67,14 +68,9 @@ object MeifanSalonManager extends Controller {
    * @return
    */
   def deleteMeifanSalon(salonId :ObjectId) = Action { implicit request =>
-    val salon: Option[Salon] = Salon.findOneById(salonId)
-    val page = request.session.get("page").map{p=>p}getOrElse{"0"}
-    salon.map{ s =>
-      SalonManager.deleteSalon(s)
-      MeifanSalonApplies.Home(page.toInt)
-    }getOrElse {
-      NotFound
-    }
+    val page = request.session.get(ManagerCommon.salonPage).map{p=>p}getOrElse{"0"}
+    SalonManager.deleteSalon(salonId)
+    MeifanSalonApplies.Home(page.toInt)
   }
 
   /**
@@ -83,13 +79,47 @@ object MeifanSalonManager extends Controller {
    * @return
    */
   def activeMeifanSalon(salonId :ObjectId) = Action{ implicit request =>
-    val salon: Option[Salon] = Salon.findOneById(salonId)
-    val page = request.session.get("page").map{p=>p}getOrElse{"0"}
-    salon.map{ s =>
-      SalonManager.activeSalon(s)
-      MeifanSalonApplies.Home(page.toInt)
-    }getOrElse {
-      NotFound
-    }
+    val page = request.session.get(ManagerCommon.salonPage).map{p=>p}getOrElse{"0"}
+    SalonManager.activeSalon(salonId)
+    MeifanSalonApplies.Home(page.toInt)
+  }
+
+
+  def processAllSalons = Action{ implicit request =>
+    println("location.......")
+    salonIdForm.bindFromRequest.fold(
+    errors => BadRequest(views.html.index("")),
+    {
+
+      case(salonId, processType) => {
+      processType match {
+        case "delete" => {
+          salonId.map { id =>
+            SalonManager.deleteSalon(new ObjectId(id))
+          }
+        }
+
+        case "active" => {
+          salonId.map{ id =>
+            SalonManager.activeSalon(new ObjectId(id))
+          }
+        }
+
+        case "agree" => {
+          salonId.map{ id =>
+            SalonApply.agreeSalonApy(new ObjectId(id))
+          }
+        }
+
+        case "reject" => {
+          salonId.map{ id =>
+            SalonApply.agreeSalonApy(new ObjectId(id))
+          }
+        }
+      }
+        val page = request.session.get(ManagerCommon.salonPage).map{p=>p}getOrElse{"0"}
+        MeifanSalonApplies.Home(page.toInt)
+      }
+    })
   }
 }

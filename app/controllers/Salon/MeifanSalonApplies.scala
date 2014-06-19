@@ -6,29 +6,17 @@ import com.mongodb.casbah.commons.Imports._
 import models._
 import views._
 import models.portal.salon._
-import models.portal.manager._
+import models.manager._
 import play.api.data.Forms._
 import play.cache.Cache
-import models.portal.manager.Page
-import models.portal.manager.MeifanSalonApySearch
-import models.portal.manager.Page
-import models.portal.manager.MeifanSalonApySearch
 
 
 /**
  * Created by PINGDOU on 14/06/09.
  */
 object MeifanSalonApplies extends Controller {
-  //a constant for page size
-  val pageSize :Int = 10
 
-  //0表示正在申请中状态
-  val meifanSalonFlagisApy = 0
-
-  //
-  val meifanAppliedSalons :String = "meifanAppliedSalons"
-
-
+  val pageSize = ManagerCommon.pageSize
 
   /**
    * The play form for search salon which has applied
@@ -64,7 +52,8 @@ object MeifanSalonApplies extends Controller {
    */
   def list(page :Int = 0) = Action { implicit request =>
     var salonsApply :List[SalonApply] = Nil
-    val cac = Cache.get(meifanAppliedSalons)
+    val cac = Cache.get(ManagerCommon.meifanSalonSearch)
+    var salonSearchForms :List[MeifanSalonApySearch] = Nil
     cac match {
       /*case Some(cachedValue) =>{
         println("match"+cachedValue)
@@ -74,18 +63,20 @@ object MeifanSalonApplies extends Controller {
       */
 
       case null => {
-        salonsApply = SalonApply.findAllAPSalons(Salon.findAll.toList, meifanSalonFlagisApy)
-        Cache.set(meifanAppliedSalons, salonsApply)
+        salonsApply = SalonApply.findAllAPSalons(Salon.findAll.toList, ManagerCommon.meifanSalonFlagisApy)
       }
 
       case __ =>{
-        salonsApply = cac.asInstanceOf[List[SalonApply]]
+       val salonSearch = cac.asInstanceOf[MeifanSalonApySearch]
+        salonsApply = SalonApply.findSalonApyByCondition(salonSearch)
+        salonSearchForms :::= List(salonSearch)
       }
     }
-    //val salonsApply :List[SalonApply] = SalonApply.findAllAPSalons(Salon.findAll.toList)
+    //val salonsApply :List[SalonApply] = SalonApply.findAllAPSalons(salon.findAll.toList)
     val offset = page * pageSize
+    val forms = if(salonSearchForms.nonEmpty){ SalonAppliedSearchForm.fill(salonSearchForms(0)) } else SalonAppliedSearchForm
     val currentPage = new Page[SalonApply](salonsApply.slice(offset,offset+ pageSize), page, offset, salonsApply.length)
-    Ok(views.html.salon.applySalons(SalonAppliedSearchForm, MeifanSalonManager.salonIdForm, currentPage)).withSession("page" -> page.toString)
+    Ok(views.html.salon.applySalons(forms, MeifanSalonManager.salonIdForm, currentPage)).withSession(ManagerCommon.salonPage -> page.toString)
   }
 
   /**
@@ -95,11 +86,10 @@ object MeifanSalonApplies extends Controller {
    * @return
    */
   def agreeMeifanSalonApy(salonId: ObjectId) = Action { implicit request =>
-    val salon :Option[Salon] = Salon.findOneById(salonId)
-    val page = {request.session.get("page").map{p=>p}getOrElse{"0"}}.toInt
-    salon.map{ s =>
-      SalonApply.agreeSalonApy(s)
-      Home(page).flashing("success" -> "%s has become a salon".format(s.salonName))
+    val salonName = SalonApply.agreeSalonApy(salonId)
+    val page = {request.session.get(ManagerCommon.salonPage).map{p=>p}getOrElse{"0"}}.toInt
+    salonName.map{ name =>
+      Home(page).flashing("success" -> "%s has become a salon".format(name))
     }getOrElse{
       Home(page)
     }
@@ -113,11 +103,10 @@ object MeifanSalonApplies extends Controller {
    * @return
    */
   def rejectMeifanSalonApy(salonId: ObjectId) = Action { implicit request =>
-    val salon :Option[Salon] = Salon.findOneById(salonId)
-    val page = {request.session.get("page").map{p=>p}getOrElse{"0"}}.toInt
-    salon.map{ s =>
-      SalonApply.rejectSalonApy(s)
-      Home(page).flashing("success" -> "%s has denied".format(s.salonName))
+    val salonName = SalonApply.rejectSalonApy(salonId)
+    val page = {request.session.get(ManagerCommon.salonPage).map{p=>p}getOrElse{"0"}}.toInt
+    salonName.map{ name =>
+      Home(page).flashing("success" -> "%s has denied".format(name))
     }getOrElse{
       Home(page)
     }
@@ -132,7 +121,7 @@ object MeifanSalonApplies extends Controller {
   def getItemDetail(salonId: ObjectId, page :Int) = Action { implicit request =>
     val salon :Option[Salon] = Salon.findOneById(salonId)
     salon.map{ s=>
-      Ok(views.html.salon.appliedItemDetail(s)).withSession("page" -> page.toString)
+      Ok(views.html.salon.appliedItemDetail(s)).withSession(ManagerCommon.salonPage -> page.toString)
     }getOrElse{
       Home(page)
     }
@@ -140,14 +129,15 @@ object MeifanSalonApplies extends Controller {
 
 
   def getByCondition = Action { implicit request =>
-    Cache.set(meifanAppliedSalons, null)
     SalonAppliedSearchForm.bindFromRequest.fold(
       formWithErrors => BadRequest(views.html.index("")),
       meifanSalonApySearch => {
-
-        val apySalons :List[SalonApply]= SalonApply.findSalonApyByCondition(meifanSalonApySearch)
-        Cache.set(meifanAppliedSalons, apySalons)
-        Home(0)
+        Cache.set(ManagerCommon.meifanSalonSearch, meifanSalonApySearch)
+        val page = request.session.get(ManagerCommon.salonPage).map{page => page.toInt}getOrElse(0)
+        val offset = page*pageSize
+        val Salons :List[SalonApply]= SalonApply.findSalonApyByCondition(meifanSalonApySearch)
+        val currentPage = Page.apply[SalonApply](Salons.slice(offset, offset + pageSize), page, offset, Salons.length)
+        Ok(views.html.salon.applySalons(SalonAppliedSearchForm.fill(meifanSalonApySearch), MeifanSalonManager.salonIdForm, currentPage)).withSession("page" -> page.toString)
       }
     )
   }
@@ -158,7 +148,7 @@ object MeifanSalonApplies extends Controller {
    * @return
    */
   def retrunToPrePage = Action { implicit request =>
-    val page = request.session.get("page").map{p=>p}getOrElse{"0"}
+    val page = request.session.get(ManagerCommon.salonPage).map{p=>p}getOrElse{"0"}
     Home((page).toInt)
   }
 
