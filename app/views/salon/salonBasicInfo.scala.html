@@ -1,4 +1,4 @@
-@(salon: models.portal.salon.Salon, itemType: String)(implicit flash: play.api.mvc.Flash)
+@(salon: models.portal.salon.Salon)(implicit flash: play.api.mvc.Flash)
 
 @main {
 
@@ -24,7 +24,7 @@
       </tr>
       <tr>
         <td>@Messages("salon.basicInfo.homePage")</td>
-        <td>@salon.homepage</td>
+        <td><a href="@salon.homepage">@salon.homepage</a></td>
       </tr>
       <tr>
         <td>@Messages("salon.basicInfo.address")</td>
@@ -43,9 +43,9 @@
       <tr>
         <td>@Messages("salon.basicInfo.workTime")</td>
         <td>
-          @salon.workTime.map{openTime => openTime}getOrElse{@Messages("result.isEmpty")}
+          @salon.workTime.map{workTime => @workTime.openTime}.getOrElse{@Messages("result.isEmpty")}
           -
-          @salon.workTime.map{closeTime => closeTime}getOrElse{@Messages("result.isEmpty")}
+          @salon.workTime.map{workTime => @workTime.closeTime}.getOrElse{@Messages("result.isEmpty")}
         </td>
       </tr>
       <tr>

@@ -1,5 +1,6 @@
 #salon manager apply
 meifanManger.salon.applied = 申请中的店铺，总计{0}
+meifanManger.user.find = 搜索到的用户，总计{0}
 meifanManger.salon.BasicInfo = 基本资料
 meifanManger.salon.DetailInfo = 详细资料
 meifanManger.salon.ImageInfo = 店铺图片
@@ -67,12 +68,25 @@ manager.operate.reject = 拒绝
 manager.operate.selectAll = 全选
 manager.operate.prePage = 上一页
 manager.operate.nextPage = 下一页
-
+manager.operate.select = 请选择
 #manager Info
 manager.noBusinessLicencePhoto = 该店铺还未上传营业执照
 
 #manager check status
-manager.status = 状态
+manager.status.apyFlag = 状态
 manager.status.applied = 申请中
 manager.status.agreed = 已同意
 manager.status.rejected = 已拒绝
+manager.status.delete = 注销
+manager.status.active = 激活
+manager.status.valid = 有效
+manager.status.invalid = 无效
+
+#manager user module
+manager.user.accountId = 用户账号
+manager.user.nickName = 昵称
+manager.user.telPhone = 手机号码
+manager.user.email = 邮箱
+manager.user.registerTime = 创建时间
+manager.user.status = 状态
+

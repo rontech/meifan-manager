@@ -1,14 +1,22 @@
-@(salonId: ObjectId, itemType :String)
+@(salon :models.portal.salon.Salon)
 
-@if(itemType.equals("SALON_APPLY")){
+<div>
+@if(salon.salonStatus.applyMeifanFlag == 0){
   <div>
-    <a class="btn success" id="add" href="#">同意</a>
-    <a class="btn success" id="add" href="#">拒绝</a>
-    <a class="btn success" id="add" href="@routes.MeifanSalonApplies.retrunToPrePage">返回</a>
+    <a class="btn success" href="@routes.MeifanSalonApplies.agreeMeifanSalonApy(salon.id)"><span>@Messages("manager.operate.agree")</span><b></b></a>
+    <a class="btn success" href="@routes.MeifanSalonApplies.rejectMeifanSalonApy(salon.id)"><span>@Messages("manager.operate.reject")</span><b></b></a>
   </div>
-
 }
 
-@if(itemType.equals("SALON_MANAGER")){
-  <div><a class="btn success" id="add" href="#">注销该店铺</a></div>
+@if(salon.salonStatus.applyMeifanFlag == 1){
+  @if(salon.salonStatus.isValid == true){
+    <div>
+      <a class="btn success" id="add" href="@routes.MeifanSalonManager.deleteMeifanSalon(salon.id)">@Messages("manager.status.delete")</a>
+      <a class="btn disabled" id="add" href="#">@Messages("manager.status.active")</a>
+    </div>
+  }else{
+    <a class="btn disabled" id="add" href="#">@Messages("manager.status.delete")</a>
+    <a class="btn success" id="add" href="@routes.MeifanSalonManager.activeMeifanSalon(salon.id)">@Messages("manager.status.active")</a>
+  }
 }
+</div>
