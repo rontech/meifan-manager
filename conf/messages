@@ -108,3 +108,4 @@ manager.stylist.delete = 冻结
 manager.stylist.active = 激活
 manager.stylist.status.ok = 活动
 manager.stylist.status.freezn = 冻结
+search = 搜索

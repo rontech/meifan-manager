@@ -1,12 +1,11 @@
 @(StylistForm: Form[ models.manager.stylist.MeifanStylistSearch ], stylistIdForm :Form[List[String]], currentPage:  models.manager.stylist.Page[models.portal.stylist.Stylist])(implicit flash: play.api.mvc.Flash)
 @import  models.manager.stylist._
 
-  @link(page :Int) = {
-    @routes.MeifanStylistApplies.list(page)
-
-  }
+@link(page :Int) = {
+@routes.MeifanStylistApplies.list(page)
+}
 @main {
-   <h1>@Messages("meifanManger.Stylist.srch", currentPage.total)</h1>
+<h1>@Messages("meifanManger.Stylist.srch", currentPage.total)</h1>
 @views.html.Stylist.stylistSrchForm(StylistForm,"StylistSrch")
 
 @Option(currentPage.items).filterNot(_.isEmpty).map { stylist =>
@@ -26,7 +25,6 @@
             <a href="javascript:void(0);" class="selectAll"><input type='checkbox' class="boxChecked"/>@Messages("manager.operate.selectAll")</a>
         </th>
         <!--需要字段：技师ID 技师账号 昵称  行业  联系电话 邮箱 是否签约店铺 状态 操作 -->
-
         <th class="header">@Messages("stylist.basicInfo.stylistId")</th>
         <th class="header">@Messages("stylist.basicInfo.nickName")</th>
         <th class="header">@Messages("stylist.basicInfo.position")</th>
@@ -43,22 +41,21 @@
         <td><input type='checkbox' name='stylistId[@i]'/></td>
         <td>@models.portal.stylist.Stylist.findUser(stylistSrch.stylistId).userId</td>
         <td>@models.portal.stylist.Stylist.findUser(stylistSrch.stylistId).nickName</td>
-        <td>@stylistSrch.position(0).industryName - @stylistSrch.position(0).positionName </td>
+        <td>@stylistSrch.position(0).industryName - @stylistSrch.position(0).positionName</td>
         <td>@models.portal.stylist.Stylist.findUser(stylistSrch.stylistId).tel</td>
         <td>@models.portal.stylist.Stylist.findUser(stylistSrch.stylistId).email</td>
         <td>@stylistSrch.isVerified</td>
         <td>@stylistSrch.isValid</td>
         <td>
-           @views.html.Stylist.stylistOperateItem(stylistSrch)
+            @views.html.Stylist.stylistOperateItem(stylistSrch)
         </td>
-
-}
+        }
 
     </tr>
     </tbody>
 
-    </table>
-    <div id="pagination" class="pagination">
+</table>
+<div id="pagination" class="pagination">
     <ul>
         @currentPage.prev.map { page =>
         <li class="prev">
@@ -70,7 +67,8 @@
         </li>
         }
         <li class="current">
-            <a>Displaying @(currentPage.offset + 1) to @(currentPage.offset + currentPage.items.length) of @currentPage.total</a>
+            <a>Displaying @(currentPage.offset + 1) to @(currentPage.offset + currentPage.items.length) of
+                @currentPage.total</a>
         </li>
         @currentPage.next.map { page =>
         <li class="next">
@@ -83,11 +81,12 @@
         }
     </ul>
 </div>
-        }.getOrElse {
-
+}.getOrElse {
 <div class="well">
     <em>Nothing to display</em>
 </div>
 }
-        }
+}
+<script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"> </script>
+<script src="@routes.Assets.at("javascripts/managerSalon.js")" type="text/javascript"> </script>
 

@@ -3,15 +3,12 @@
 
 <div>
     @if(itemType.equals("StylistSrch")) {
-
     @helper.form(routes.MeifanStylistApplies.getByCondition){
-
     @inputText(StylistForm("userId"), '_label -> Messages("stylist.basicInfo.stylistId"))
     @inputText(StylistForm("nickName"), '_label -> Messages("stylist.basicInfo.nickName"))
 
     @select(
     StylistForm("industry"),
-
     options = options(models.portal.industry.Industry.findAllIndustryName),
     '_label -> Messages("stylist.basicInfo.position"),
     '_showConstraints -> false
@@ -19,21 +16,17 @@
     <div class="clearfix"></div>
 
     @select(
-    StylistForm("isVerified"),
+    StylistForm("isValid"),
     options(
-    "false" -> Messages("manager.stylist.status.ok"),
-    "true" -> Messages("manager.stylist.status.freezn")
+    "true" -> Messages("manager.stylist.status.ok"),
+    "false" -> Messages("manager.stylist.status.freezn")
     ),
     '_default -> "--chose--",
     '_label -> Messages("manager.status.apyFlag"),
     '_showConstraints -> false
     )
-
-    <input type="submit" value="搜索" />
+    <input type="submit" value=@Messages("search")>
     <div class="clearfix"></div>
-
-
     }
-
     }
 </div>

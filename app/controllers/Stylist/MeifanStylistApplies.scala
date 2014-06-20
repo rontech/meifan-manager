@@ -31,10 +31,10 @@ object MeifanStylistApplies extends Controller{
    */
   //  检索功能： 技师ID或者技师账号、行业类别、状态；
   val StylistSearchForm :Form[MeifanStylistSearch] = Form(mapping(
-    "userid" -> optional(text),
+    "userId" -> optional(text),
     "nickName" -> optional(text),
      "industry" -> optional(text),
-    "isVarified" -> optional(boolean)
+    "isValid" -> optional(boolean)
   )(MeifanStylistSearch.apply)(MeifanStylistSearch.unapply)
 
   )
@@ -93,7 +93,7 @@ object MeifanStylistApplies extends Controller{
     StylistSearchForm.bindFromRequest.fold(
       formWithErrors => BadRequest(views.html.index("")),
       meifanStylistSearch => {
-        println(meifanStylistSearch.userId+"&&&&&&&&&&"+meifanStylistSearch.nickName+"++++++++"+meifanStylistSearch.industry+"*****"+meifanStylistSearch.isVerified+"@@@@@@@")
+        println(meifanStylistSearch.userId+"&&&&&&&&&&"+meifanStylistSearch.nickName+"++++++++"+meifanStylistSearch.industry+"*****"+meifanStylistSearch.isValid+"@@@@@@@")
         val stylistSrch :List[models.portal.stylist.Stylist]= StylistApply.findStylistByCondition(meifanStylistSearch)
         println(stylistSrch.length)
         println("******")

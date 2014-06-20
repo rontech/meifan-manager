@@ -4,11 +4,12 @@
 
 @main {
 <style type="text/css">
-    .adminname{
+    .adminname {
         margin-top: 10px;
         margin-left: 200px;
     }
-    .text{
+
+    .text {
         margin-left: 400px;
     }
 </style>
@@ -22,21 +23,26 @@
             @form(action = auth.routes.Admins.login(), 'method ->"post"){
             <div class="item fore1">
                 <span class="adminname">@Messages("admin.name")</span>
+
                 <div class="item-ifo">
-                    @inputText(field = loginForm("adminId"), '_label -> None, 'placeholder -> Messages("user.name"), 'class -> "text",
-                    '_error ->  loginForm("adminId").error.map(_.withMessage(Messages("admin.loginUserIdErr"))), '_help -> ""
+                    @inputText(field = loginForm("adminId"), '_label -> None, 'placeholder -> Messages("user.name"),
+                    'class -> "text",
+                    '_error -> loginForm("adminId").error.map(_.withMessage(Messages("admin.loginUserIdErr"))), '_help
+                    -> ""
                     )
                 </div>
             </div>
             <div class="item fore2">
                 <span>@Messages("admin.password")</span>
+
                 <div class="item-ifo">
-                    @inputPassword(field = loginForm("password"), '_label -> None, 'placeholder ->Messages("user.password"), 'class -> "text",
+                    @inputPassword(field = loginForm("password"), '_label -> None, 'placeholder
+                    ->Messages("user.password"), 'class -> "text",
                     '_error -> loginForm.globalError.map(_.withMessage(Messages("admin.loginErr"))))
                 </div>
             </div>
 
-            <input type= "submit" class = "btn-img btn-entry" value="@Messages("user.loginBtn")" >
+            <input type="submit" class="btn-img btn-entry" value="@Messages(" user.loginBtn")" >
             }
         </div>
 
