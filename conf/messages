@@ -1,5 +1,6 @@
 #salon manager apply
 meifanManger.salon.applied = 申请中的店铺，总计{0}
+
 meifanManger.salon.BasicInfo = 基本资料
 meifanManger.salon.DetailInfo = 详细资料
 meifanManger.salon.ImageInfo = 店铺图片
@@ -83,4 +84,17 @@ manager.status.active = 激活
 admin.login = 管理员登录
 admin.name = 账号
 admin.password = 密码
-
+#manager stylist
+meifanManger.Stylist.srch = 技师查询
+stylist.basicInfo.stylistId = 技师账号
+stylist.basicInfo.nickName = 技师昵称
+stylist.basicInfo.position = 行业类别
+stylist.basicInfo.tel = 联系方式
+stylist.basicInfo.email = 电子邮箱
+stylist.basicInfo.isSign =是否签约店铺
+stylist.basicInfo.isValid = 是否有效
+stylist.operate = 操作
+manager.stylist.delete = 冻结
+manager.stylist.active = 激活
+manager.stylist.status.ok = 活动
+manager.stylist.status.freezn = 冻结

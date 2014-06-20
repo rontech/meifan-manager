@@ -19,12 +19,22 @@ GET         /MeifanSalonApy/showDetail               controllers.MeifanSalonAppl
 POST        /searchApySalon                          controllers.MeifanSalonApplies.getByCondition
 GET         /retrunToPrePage                         controllers.MeifanSalonApplies.retrunToPrePage
 
+#manager about stylist to meifan platform
+GET         /allAppliedStylist/:page                controllers.MeifanStylistApplies.list(page: Int)
+GET         /stylistPage                            controllers.MeifanStylistApplies.stylistPage
+POST        /searchStylist                          controllers.MeifanStylistApplies.getByCondition
+GET         /MeifanStylist/active                   controllers.MeifanStylistApplies.activeMeifanStylist(stylistId: ObjectId)
+GET         /MeifanSalonApy/frozen                  controllers.MeifanStylistApplies.frozenMeifanStylist(stylistId: ObjectId)
+
+
 # meifan salon manager
 GET         /getBasicInfo/:salonId                   controllers.MeifanSalonManager.getBasicInfo(salonId :ObjectId)
 GET         /getDetailInfo/:salonId                  controllers.MeifanSalonManager.getDetailInfo(salonId :ObjectId)
 GET         /getImageInfo/:salonId                   controllers.MeifanSalonManager.getImageInfo(salonId :ObjectId)
 GET         /deleteSalon/:salonId                    controllers.MeifanSalonManager.deleteMeifanSalon(salonId :ObjectId)
 GET         /activeSalon/:salonId                    controllers.MeifanSalonManager.activeMeifanSalon(salonId :ObjectId)
+
+
 
 
 #Jump to Admin Login Page.

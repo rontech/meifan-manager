@@ -12,11 +12,11 @@
     @**********************************
     * Helper generating table headers *
     ***********************************@
-  @*header(orderBy: Int, title: String) = {
+  <!--@*header(orderBy: Int, title: String) = {
     <th class="col@orderBy header @if(scala.math.abs(currentOrderBy) == orderBy) @{if(currentOrderBy < 0) "headerSortDown" else "headerSortUp"}">
       <a href="@link(0, Some(orderBy))">@title</a>
     </th>
-  }*@
+  }*@-->
 
   @main {
 
@@ -27,9 +27,11 @@
         <strong>Done!</strong> @message
       </div>
     }
+   @views.html.salon.searchForm(SalonAppliedForm,"SALON_APPLY")
 
-    @Option(currentPage.items).filterNot(_.isEmpty).map { salons =>
-    @*<div id="actions">
+
+@Option(currentPage.items).filterNot(_.isEmpty).map { salons =>
+    <!--@*<div id="actions">
 
       @*helper.form(action=routes.Application.list()) {
         <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Filter by computer name...">
@@ -38,23 +40,23 @@
 
       <a class="btn success" id="add" href="#">Add a new computer</a>
 
-    </div>*@
-    @views.html.salon.searchForm(SalonAppliedForm,"SALON_APPLY")
+    </div>*@-->
 
 
-    @if(salons.exists(p=>p.salon.salonStatus.isValid == true)){
-      <div>
+@if(salons.exists(p=>p.salon.salonStatus.isValid == true)){
+<div>
 
-        <a class="btn disabled page_btn" id="add" href="#">&larr; @Messages("manager.status.delete")</a>
+    <a class="btn disabled page_btn" id="add" href="#">&larr; @Messages("manager.status.delete")</a>
 
-        <a class="btn disabled page_btn" id="add" href="#">&larr; @Messages("manager.status.active")</a>
+    <a class="btn disabled page_btn" id="add" href="#">&larr; @Messages("manager.status.active")</a>
 
-      </div>
-    }else{
-      <a class="btn disabled page_btn" id="add" href="#">&larr; @Messages("manager.operate.agree")</a>
+</div>
+}else{
+<a class="btn disabled page_btn" id="add" href="#">&larr; @Messages("manager.operate.agree")</a>
 
-      <a class="btn disabled page_btn" id="add" href="#">&larr; @Messages("manager.operate.reject")</a>
-    }
+<a class="btn disabled page_btn" id="add" href="#">&larr; @Messages("manager.operate.reject")</a>
+}
+
 
 
     <table class="computers zebra-striped">
