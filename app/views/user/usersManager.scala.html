@@ -1,0 +1,116 @@
+@(userSearchForm: Form[models.manager.UserSearch], currentPage: models.manager.Page[models.manager.UserManager])(implicit flash: play.api.mvc.Flash)
+
+@link(page :Int) = {
+@routes.MeifanUserManager.list(page)
+}
+
+@main {
+
+<h1>@Messages("meifanManger.user.find", currentPage.total)</h1>
+
+@flash.get("success").map { message =>
+    <div class="alert-message warning">
+        <strong>Done!</strong> @message
+    </div>
+}
+@views.html.user.searchForm(userSearchForm)
+
+@Option(currentPage.items).filterNot(_.isEmpty).map { users =>
+    @*<div id="actions">
+
+    @*helper.form(action=routes.Application.list()) {
+    <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Filter by computer name...">
+    <input type="submit" id="searchsubmit" value="Filter by name" class="btn primary">
+    }
+
+    <a class="btn success" id="add" href="#">Add a new computer</a>
+
+    </div>*@
+
+    @helper.form(routes.MeifanSalonManager.processAllSalons()){
+         <div>
+           <a class="btn disabled page_btn" id="add" href="#">&larr; @Messages("manager.status.delete")</a>
+
+           <a class="btn disabled page_btn" id="add" href="#">&larr; @Messages("manager.status.active")</a>
+         </div>
+
+
+
+        <table class="computers zebra-striped">
+            <thead>
+                <tr>
+                    <th class="header">
+                        <a href="javascript:void(0);" class="selectAll"><input type='checkbox' class="boxChecked"/>@Messages("manager.operate.selectAll")</a>
+                    </th>
+                    <th class="header">@Messages("manager.user.accountId")</th>
+                    <th class="header">@Messages("manager.user.nickName")</th>
+                    <th class="header">@Messages("manager.user.telPhone")</th>
+                    <th class="header">@Messages("manager.user.email")</th>
+                    <th class="header">@Messages("manager.user.registerTime")</th>
+                    <th class="header">@Messages("manager.user.status")</th>
+                    <th class="header">@Messages("manager.operate")</th>
+                </tr>
+            </thead>
+            <tbody>
+
+
+            @for((user, i) <- users.zipWithIndex){
+                <tr>
+                    <td><input type='checkbox' name='salonId[@i]'/></td>
+                    <td>@user.userId</td>
+                    <td><a href="@*routes.MeifanUserManager.getUserInfo(user.id)*@#">@user.nickName</a></td>
+                    <td>@user.tel</td>
+                    <td>@user.email</td>
+                    <td>@user.registerTime.format("yyyy-MM-dd")</td>
+
+                    <td>@if(user.isVaild){@Messages("manager.status.valid")}else{@Messages("manager.status.invalid")}</td>
+                    <td>
+                    @if(user.isVaild){
+                        <a class="btn success" href="@routes.MeifanUserManager.setUserInvaild(user.id)"><span>@Messages("manager.status.delete")</span><b></b></a>
+                        <a class="btn disabled" href="#"><span>@Messages("manager.status.active")</span><b></b></a>
+                        }else{
+                        <a class="btn disabled" href="#"><span>@Messages("manager.status.delete")</span><b></b></a>
+                        <a class="btn success" href="@routes.MeifanUserManager.activeUser(user.id)"><span>@Messages("manager.status.active")</span><b></b></a>
+                    }
+                    </td>
+
+                </tr>
+
+            }
+
+            </tbody>
+        </table>
+    }
+<div id="pagination" class="pagination">
+    <ul>
+        @currentPage.prev.map { page =>
+        <li class="prev">
+            <a href="@link(page)">&larr; @Messages("manager.operate.prePage")</a>
+        </li>
+        }.getOrElse {
+            <li class="prev disabled">
+                <a>&larr; @Messages("manager.operate.prePage")</a>
+            </li>
+        }
+    <li class="current">
+        <a>Displaying @(currentPage.offset + 1) to @(currentPage.offset + currentPage.items.length) of @currentPage.total</a>
+    </li>
+        @currentPage.next.map { page =>
+        <li class="next">
+            <a href="@link(page)">@Messages("manager.operate.nextPage") &rarr;</a>
+        </li>
+        }.getOrElse {
+            <li class="next disabled">
+                <a>@Messages("manager.operate.nextPage") &rarr;</a>
+            </li>
+        }
+</ul>
+</div>
+
+}.getOrElse {
+
+    <div class="well">
+        <em>Nothing to display</em>
+    </div>
+}
+}
