@@ -30,6 +30,9 @@ object MeifanStylistApplies extends Controller{
    * @param  isVarified salon apply status
    */
   //  检索功能： 技师ID或者技师账号、行业类别、状态；
+  /**
+   * Define form for Stylist search
+   */
   val StylistSearchForm :Form[MeifanStylistSearch] = Form(mapping(
     "userId" -> optional(text),
     "nickName" -> optional(text),
@@ -46,7 +49,7 @@ object MeifanStylistApplies extends Controller{
   def StylistR(p: Int) = Redirect(routes.MeifanStylistApplies.list(p))
 
   /**
-   * Show all apply salon items in a page
+   * Show all stylist items in a page
    * @param page the page want to go
    * @return
    */

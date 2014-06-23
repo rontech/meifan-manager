@@ -69,6 +69,8 @@ manager.operate.selectAll = 全选
 manager.operate.prePage = 上一页
 manager.operate.nextPage = 下一页
 manager.operate.select = 请选择
+manager.operate.search = 搜索
+manager.operate.submit = 提交
 #manager Info
 manager.noBusinessLicencePhoto = 该店铺还未上传营业执照
 
@@ -81,6 +83,7 @@ manager.status.delete = 注销
 manager.status.active = 激活
 manager.status.valid = 有效
 manager.status.invalid = 无效
+
 
 #manager user module
 manager.user.accountId = 用户账号
@@ -108,4 +111,6 @@ manager.stylist.delete = 冻结
 manager.stylist.active = 激活
 manager.stylist.status.ok = 活动
 manager.stylist.status.freezn = 冻结
-search = 搜索
+
+
+
