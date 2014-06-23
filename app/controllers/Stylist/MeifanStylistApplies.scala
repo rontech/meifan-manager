@@ -91,21 +91,23 @@ object MeifanStylistApplies extends Controller{
     val stylistPage = request.session.get("stylistPage").map{p=>p}getOrElse{"0"}
     StylistR((stylistPage).toInt)
   }
+  /*
+  search stylist according to the conditions
+   */
   def getByCondition = Action { implicit request =>
     //Cache.set(meifanStylist, null)
     StylistSearchForm.bindFromRequest.fold(
       formWithErrors => BadRequest(views.html.index("")),
       meifanStylistSearch => {
-        println(meifanStylistSearch.userId+"&&&&&&&&&&"+meifanStylistSearch.nickName+"++++++++"+meifanStylistSearch.industry+"*****"+meifanStylistSearch.isValid+"@@@@@@@")
         val stylistSrch :List[models.portal.stylist.Stylist]= StylistApply.findStylistByCondition(meifanStylistSearch)
-        println(stylistSrch.length)
-        println("******")
         val currentPage = new Page[models.portal.stylist.Stylist](stylistSrch.slice(0,0+ pageSize), 0, 0, stylistSrch.length)
         Ok(views.html.Stylist.applyStylist(StylistSearchForm,MeifanStylistManager.stylistIdForm, currentPage))
       }
     )
   }
-
+/*
+active the stylist
+ */
   def activeMeifanStylist(stylistId: ObjectId) = Action { implicit request =>
     val stylist :Option[models.portal.stylist.Stylist] = models.portal.stylist.Stylist.findOneById(stylistId)
     val page = {request.session.get("stylistPage").map{p=>p}getOrElse{"0"}}.toInt
@@ -117,7 +119,9 @@ object MeifanStylistApplies extends Controller{
     }
 
   }
-
+/*
+frozen the stylist
+ */
   def frozenMeifanStylist(stylistId: ObjectId) = Action { implicit request =>
     val stylist :Option[models.portal.stylist.Stylist] = models.portal.stylist.Stylist.findOneById(stylistId)
     val page = {request.session.get("stylistPage").map{p=>p}getOrElse{"0"}}.toInt
