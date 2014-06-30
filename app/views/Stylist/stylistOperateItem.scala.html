@@ -1,0 +1,16 @@
+@(stylist :models.portal.stylist.Stylist)
+
+<div>
+    @if(stylist.isValid == true){
+    <div>
+        <a class="btn success" id="add"
+           href="@routes.MeifanStylistApplies.frozenMeifanStylist(stylist.stylistId)"><span>@Messages("manager.stylist.delete")</span><b></b></a>
+    </div>
+    }
+    @if(stylist.isValid == false){
+    <div>
+        <a class="btn success" href="@routes.MeifanStylistApplies.activeMeifanStylist(stylist.stylistId)">@Messages("manager.stylist.active")</a>
+    </div>
+    }
+
+</div>

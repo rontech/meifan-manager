@@ -19,6 +19,14 @@ GET         /MeifanSalonApy/showDetail        controllers.MeifanSalonApplies.get
 POST        /searchApySalon                   controllers.MeifanSalonApplies.getByCondition
 GET         /retrunToPrePage                  controllers.MeifanSalonApplies.retrunToPrePage
 
+#manager about stylist to meifan platform
+GET         /allAppliedStylist/:page                controllers.MeifanStylistApplies.list(page: Int)
+GET         /stylistPage                            controllers.MeifanStylistApplies.stylistPage
+POST        /searchStylist                          controllers.MeifanStylistApplies.getByCondition
+GET         /MeifanStylist/active                   controllers.MeifanStylistApplies.activeMeifanStylist(stylistId: ObjectId)
+GET         /MeifanSalonApy/frozen                  controllers.MeifanStylistApplies.frozenMeifanStylist(stylistId: ObjectId)
+
+
 # meifan salon manager
 GET         /getBasicInfo/:salonId            controllers.MeifanSalonManager.getBasicInfo(salonId :ObjectId)
 GET         /getDetailInfo/:salonId           controllers.MeifanSalonManager.getDetailInfo(salonId :ObjectId)
@@ -28,8 +36,11 @@ GET         /activeSalon/:salonId             controllers.MeifanSalonManager.act
 POST        /processAllSalons                 controllers.MeifanSalonManager.processAllSalons
 
 #meifan user manager
-GET         /getAllUsers/:page                controllers.MeifanUserManager.list(page: Int)
-GET         /setUserInvaild/:id               controllers.MeifanUserManager.setUserInvaild(id: ObjectId)
-GET         /activeUser/:id                   controllers.MeifanUserManager.activeUser(id: ObjectId)
+GET          /getAllUsers/:page                controllers.MeifanUserManager.list(page: Int)
+GET          /setUserInvaild/:id               controllers.MeifanUserManager.setUserInvaild(id: ObjectId)
+GET          /activeUser/:id                   controllers.MeifanUserManager.activeUser(id: ObjectId)
 #GET         /userInfo/:id                     controllers.MeifanUserManager.getUserInfo(id: ObjectId)
-POST        /searchUsers                      controllers.MeifanUserManager.getByCondition
+POST         /searchUsers                      controllers.MeifanUserManager.getByCondition
+#Jump to Admin Login Page.
+POST         /adminLogin                       controllers.auth.Admins.login
+GET          /adminLogin                       controllers.Application.index

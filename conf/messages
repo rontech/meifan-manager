@@ -69,6 +69,8 @@ manager.operate.selectAll = 全选
 manager.operate.prePage = 上一页
 manager.operate.nextPage = 下一页
 manager.operate.select = 请选择
+manager.operate.search = 搜索
+manager.operate.submit = 提交
 #manager Info
 manager.noBusinessLicencePhoto = 该店铺还未上传营业执照
 
@@ -82,6 +84,7 @@ manager.status.active = 激活
 manager.status.valid = 有效
 manager.status.invalid = 无效
 
+
 #manager user module
 manager.user.accountId = 用户账号
 manager.user.nickName = 昵称
@@ -89,4 +92,25 @@ manager.user.telPhone = 手机号码
 manager.user.email = 邮箱
 manager.user.registerTime = 创建时间
 manager.user.status = 状态
+
+#manager login
+admin.login = 管理员登录
+admin.name = 账号
+admin.password = 密码
+#manager stylist
+meifanManger.Stylist.srch = 技师查询
+stylist.basicInfo.stylistId = 技师账号
+stylist.basicInfo.nickName = 技师昵称
+stylist.basicInfo.position = 行业类别
+stylist.basicInfo.tel = 联系方式
+stylist.basicInfo.email = 电子邮箱
+stylist.basicInfo.isSign =是否签约店铺
+stylist.basicInfo.isValid = 是否有效
+stylist.operate = 操作
+manager.stylist.delete = 冻结
+manager.stylist.active = 激活
+manager.stylist.status.ok = 活动
+manager.stylist.status.freezn = 冻结
+
+
 

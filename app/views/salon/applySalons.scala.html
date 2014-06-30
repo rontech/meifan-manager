@@ -13,11 +13,11 @@
     @**********************************
     * Helper generating table headers *
     ***********************************@
-  @*header(orderBy: Int, title: String) = {
+  <!--@*header(orderBy: Int, title: String) = {
     <th class="col@orderBy header @if(scala.math.abs(currentOrderBy) == orderBy) @{if(currentOrderBy < 0) "headerSortDown" else "headerSortUp"}">
       <a href="@link(0, Some(orderBy))">@title</a>
     </th>
-  }*@
+  }*@-->
 
   @main {
 
@@ -28,10 +28,13 @@
         <strong>Done!</strong> @message
       </div>
     }
+
     @views.html.salon.searchForm(SalonAppliedForm,"SALON_APPLY")
 
-    @Option(currentPage.items).filterNot(_.isEmpty).map { salons =>
-    @*<div id="actions">
+
+
+@Option(currentPage.items).filterNot(_.isEmpty).map { salons =>
+    <!--@*<div id="actions">
 
       @*helper.form(action=routes.Application.list()) {
         <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Filter by computer name...">
@@ -40,7 +43,8 @@
 
       <a class="btn success" id="add" href="#">Add a new computer</a>
 
-    </div>*@
+    </div>*@-->
+
 
     @helper.form(routes.MeifanSalonManager.processAllSalons, 'id -> "processAllSalons", 'name -> "processAllSalons"){
 
@@ -57,7 +61,7 @@
               '_label -> None,
               '_showConstraints -> false
           )&larr;
-        <input type="submit" value="提交" class="submit" />
+        <input type="submit" value= @Messages("manager.operate.submit") class="submit" />
       </div>
     }else{
         @select(
@@ -72,8 +76,9 @@
             '_showConstraints -> false
         )&larr;
 
-        <input type="submit" value="提交" class="submit" />
+        <input type="submit" value=@Messages("manager.operate.submit") class="submit" />
     }
+
 
 
     <table class="computers zebra-striped">
